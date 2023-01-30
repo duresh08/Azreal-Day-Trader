@@ -8,7 +8,7 @@ from smtplib import SMTP
 import smtplib
 import sys
 
-import datetime as dt
+import datetime
 
 from tvDatafeed import TvDatafeed, Interval
 import numpy as np
@@ -168,7 +168,7 @@ def FEMUR():
 st.title("Notification Engine")
 
 while True:
-    if datetime.now().time().hour in range(3,13) and dt.datetime.today().weekday() in range(0,5):
+    if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.today().weekday() in range(0,5):
         password_mail = st.secrets["password"]
         Output = FEMUR()
         Output_msg = Output[pd.isna(Output['Divergence']) == False]
