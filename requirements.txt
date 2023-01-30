@@ -1,0 +1,5 @@
+pandas
+numpy
+git+https://github.com/StreamAlpha/tvdatafeed#egg=tvdatafeed
+pandas_ta
+streamlit
