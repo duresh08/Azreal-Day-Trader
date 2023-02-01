@@ -194,4 +194,4 @@ while True:
                 server.close()
                 time.sleep(60)
     else:
-        time.sleep(3600)
+        time.sleep(60)
