@@ -17,14 +17,8 @@ import pandas_ta as ta
 
 import time
 
-def FEMUR():
-    Forex_Pairs_List = ["EURUSD","USDJPY","GBPUSD","AUDUSD","USDCHF","NZDUSD","USDCAD",
-                       "EURJPY","EURGBP","EURAUD","EURCHF","EURNZD","EURCAD",
-                       "GBPJPY","CHFJPY","NZDJPY","AUDJPY","CADJPY",
-                       "GBPAUD","AUDCHF","AUDNZD","AUDCAD",
-                       "GBPCHF","NZDCHF","CADCHF",
-                       "GBPNZD","GBPCAD",
-                       "NZDCAD"]
+def FEMUR(time_interval):
+    Forex_Pairs_List = ["EURUSD","USDJPY","GBPUSD","AUDUSD","USDCHF","NZDUSD","USDCAD","EURJPY","EURGBP","EURCHF","NZDJPY","NZDCAD"]
 
     Final_df = pd.DataFrame()
 
@@ -36,7 +30,7 @@ def FEMUR():
     for Currency_Pair in Forex_Pairs_List:
         Symbol_String = Currency_Pair
         Currency_Pair = tv.get_hist(symbol = 'FX:{}'.format(Currency_Pair), exchange = 'FXCM',
-                                    interval = Interval.in_15_minute, n_bars = 100)
+                                    interval = time_interval, n_bars = 100)
         #Stochastic
         Stoch = round(ta.stoch(high = Currency_Pair["high"], low = Currency_Pair["low"], 
                                close = Currency_Pair["close"], window = 14, smooth_window = 3),2)
@@ -170,10 +164,35 @@ st.title("Notification Engine")
 while True:
     if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.today().weekday() in range(0,5) and datetime.datetime.now().time().minute in [0,15,30,45]:
         password_mail = st.secrets["password"]
-        Output = FEMUR()
+        Output = FEMUR(Interval.in_15_minute)
         Output_msg = Output[pd.isna(Output['Divergence']) == False]
         msg = MIMEMultipart()
-        msg['Subject'] = "Azreal Notification"
+        msg['Subject'] = "Azreal 15 Minutes"
+        msg['From'] = 'dhruv.suresh2@gmail.com'
+        html = """\
+        <html>
+          <head></head>
+          <body>
+            {0}
+          </body>
+        </html>
+        """.format(Output_msg.to_html())
+        part1 = MIMEText(html, 'html')
+        msg.attach(part1)
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login('dhruv.suresh2@gmail.com', password_mail)
+        server.sendmail(msg['From'], 'f20180884g@alumni.bits-pilani.ac.in' , msg.as_string())
+        server.close()
+        time.sleep(60)
+    elif datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.today().weekday() in range(0,5) and datetime.datetime.now().time().minute in [0,5,10,15,20,25,30,35,40,45,50,55]:
+        password_mail = st.secrets["password"]
+        Output = FEMUR(Interval.in_5_minute)
+        symbols = ['EURUSD','AUDUSD','USDCHF','NZDUSD','USDJPY']
+        Output = Output[Output['symbol'].isin(symbols)]
+        Output_msg = Output[pd.isna(Output['Divergence']) == False]
+        msg = MIMEMultipart()
+        msg['Subject'] = "Azreal 5 Minutes"
         msg['From'] = 'dhruv.suresh2@gmail.com'
         html = """\
         <html>
@@ -192,4 +211,4 @@ while True:
         server.close()
         time.sleep(60)
     else:
-        time.sleep(1)
+        sleep(1)
