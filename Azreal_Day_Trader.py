@@ -184,8 +184,7 @@ while True:
         server.login('dhruv.suresh2@gmail.com', password_mail)
         server.sendmail(msg['From'], 'f20180884g@alumni.bits-pilani.ac.in' , msg.as_string())
         server.close()
-        time.sleep(60)
-    elif datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.today().weekday() in range(0,5) and datetime.datetime.now().time().minute in [0,5,10,15,20,25,30,35,40,45,50,55]:
+    if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.today().weekday() in range(0,5) and datetime.datetime.now().time().minute in [0,5,10,15,20,25,30,35,40,45,50,55]:
         password_mail = st.secrets["password"]
         Output = FEMUR(Interval.in_5_minute)
         symbols = ['EURUSD','AUDUSD','USDCHF','NZDUSD','USDJPY']
