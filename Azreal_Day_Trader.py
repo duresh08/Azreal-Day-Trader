@@ -165,7 +165,7 @@ while True:
     if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.today().weekday() in range(0,5) and datetime.datetime.now().time().minute in [0,5,10,15,20,25,30,35,40,45,50,55]:
         password_mail = st.secrets["password"]
         Output = FEMUR(Interval.in_5_minute)
-        symbols = ['EURUSD','AUDUSD','USDCHF','NZDUSD','USDJPY']
+        symbols = ['FX:EURUSD','FX:AUDUSD','FX:USDCHF','FX:NZDUSD','FX:USDJPY']
         Output = Output[Output['symbol'].isin(symbols)]
         Output_msg = Output[pd.isna(Output['Divergence']) == False]
         if Output_msg.empty == False:
