@@ -233,6 +233,6 @@ while True:
             server.login('dhruv.suresh2@gmail.com', password_mail)
             server.sendmail(msg['From'], 'f20180884g@alumni.bits-pilani.ac.in' , msg.as_string())
             server.close()
-    time.sleep(1)
+        time.sleep(1)
     else:
         time.sleep(1)
