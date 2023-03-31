@@ -187,52 +187,52 @@ while True:
             server.login('dhruv.suresh2@gmail.com', password_mail)
             server.sendmail(msg['From'], 'f20180884g@alumni.bits-pilani.ac.in' , msg.as_string())
             server.close()
-        if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.today().weekday() in range(0,5) and datetime.datetime.now().time().minute in [0,15,30,45]:
-            password_mail = st.secrets["password"]
-            Output = FEMUR(Interval.in_15_minute)
-            Output_msg = Output[pd.isna(Output['Divergence']) == False]
-            if Output_msg.empty == False:
-                msg = MIMEMultipart()
-                msg['Subject'] = "Azreal 15 Minutes"
-                msg['From'] = 'dhruv.suresh2@gmail.com'
-                html = """\
-                <html>
-                  <head></head>
-                  <body>
-                    {0}
-                  </body>
-                </html>
-                """.format(Output_msg.to_html())
-                part1 = MIMEText(html, 'html')
-                msg.attach(part1)
-                server = smtplib.SMTP('smtp.gmail.com', 587)
-                server.starttls()
-                server.login('dhruv.suresh2@gmail.com', password_mail)
-                server.sendmail(msg['From'], 'f20180884g@alumni.bits-pilani.ac.in' , msg.as_string())
-                server.close()
-        if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.today().weekday() in range(0,5) and datetime.datetime.now().time().minute in [0,30]:
-            password_mail = st.secrets["password"]
-            Output = FEMUR(Interval.in_30_minute)
-            Output_msg = Output[pd.isna(Output['Divergence']) == False]
-            if Output_msg.empty == False:
-                msg = MIMEMultipart()
-                msg['Subject'] = "Azreal 30 Minutes"
-                msg['From'] = 'dhruv.suresh2@gmail.com'
-                html = """\
-                <html>
-                  <head></head>
-                  <body>
-                    {0}
-                  </body>
-                </html>
-                """.format(Output_msg.to_html())
-                part1 = MIMEText(html, 'html')
-                msg.attach(part1)
-                server = smtplib.SMTP('smtp.gmail.com', 587)
-                server.starttls()
-                server.login('dhruv.suresh2@gmail.com', password_mail)
-                server.sendmail(msg['From'], 'f20180884g@alumni.bits-pilani.ac.in' , msg.as_string())
-                server.close()
-        time.sleep(60)
+    if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.today().weekday() in range(0,5) and datetime.datetime.now().time().minute in [0,15,30,45]:
+        password_mail = st.secrets["password"]
+        Output = FEMUR(Interval.in_15_minute)
+        Output_msg = Output[pd.isna(Output['Divergence']) == False]
+        if Output_msg.empty == False:
+            msg = MIMEMultipart()
+            msg['Subject'] = "Azreal 15 Minutes"
+            msg['From'] = 'dhruv.suresh2@gmail.com'
+            html = """\
+            <html>
+              <head></head>
+              <body>
+                {0}
+              </body>
+            </html>
+            """.format(Output_msg.to_html())
+            part1 = MIMEText(html, 'html')
+            msg.attach(part1)
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login('dhruv.suresh2@gmail.com', password_mail)
+            server.sendmail(msg['From'], 'f20180884g@alumni.bits-pilani.ac.in' , msg.as_string())
+            server.close()
+    if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.today().weekday() in range(0,5) and datetime.datetime.now().time().minute in [0,30]:
+        password_mail = st.secrets["password"]
+        Output = FEMUR(Interval.in_30_minute)
+        Output_msg = Output[pd.isna(Output['Divergence']) == False]
+        if Output_msg.empty == False:
+            msg = MIMEMultipart()
+            msg['Subject'] = "Azreal 30 Minutes"
+            msg['From'] = 'dhruv.suresh2@gmail.com'
+            html = """\
+            <html>
+              <head></head>
+              <body>
+                {0}
+              </body>
+            </html>
+            """.format(Output_msg.to_html())
+            part1 = MIMEText(html, 'html')
+            msg.attach(part1)
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login('dhruv.suresh2@gmail.com', password_mail)
+            server.sendmail(msg['From'], 'f20180884g@alumni.bits-pilani.ac.in' , msg.as_string())
+            server.close()
+    time.sleep(1)
     else:
         time.sleep(1)
