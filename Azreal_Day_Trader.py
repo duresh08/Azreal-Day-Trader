@@ -188,13 +188,16 @@ def Email_sender(df, timeframe):
         pass
 
 def Sleeper():
-    if datetime.datetime.now().time().minute != 0:
-        upper_five_min = math.ceil(datetime.datetime.now().time().minute/ 5) * 5
-        diff = upper_five_min - datetime.datetime.now().time().minute
-        sleep_time_sec = ((diff - 1) * 60) + (60 - datetime.datetime.now().time().second)
+    t = datetime.datetime.now().time().minute
+    s = datetime.datetime.now().time().second
+    if t != 0:
+        upper_five_min = math.ceil(t / 5) * 5
+        diff = upper_five_min - t
+        sleep_time_sec = ((diff - 1) * 60) + (60 - s)
     else:
-        sleep_time_sec = 240 + (60 - datetime.datetime.now().time().second)
+        sleep_time_sec = 240 + (60 - s)
     return sleep_time_sec
+
 
 st.title("Notification Engine")
 
