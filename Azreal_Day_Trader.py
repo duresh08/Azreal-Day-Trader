@@ -15,6 +15,8 @@ import numpy as np
 import pandas as pd
 import pandas_ta as ta
 
+import math
+
 import time
 
 def FEMUR(time_interval):
@@ -182,25 +184,33 @@ def Email_sender(df, timeframe):
         server.login('dhruv.suresh2@gmail.com', password_mail)
         server.sendmail(msg['From'], 'f20180884g@alumni.bits-pilani.ac.in' , msg.as_string())
         server.close()
+    else:
+        pass
+
+def Sleeper():
+    if datetime.datetime.now().time().minute != 0:
+        upper_five_min = math.ceil(datetime.datetime.now().time().minute/ 5) * 5
+        diff = upper_five_min - datetime.datetime.now().time().minute
+        sleep_time_sec = ((diff - 1) * 60) + (60 - datetime.datetime.now().time().second)
+    else:
+        sleep_time_sec = 240 + (60 - datetime.datetime.now().time().second)
+    return sleep_time_sec
 
 st.title("Notification Engine")
 
 while True:
-    print("Loop Entered")
     while datetime.datetime.today().weekday() in range(0,5):
-        if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.now().time().minute in [0,5,10,15,20,25,30,35,40,45,50,55]:
-            Output = FEMUR(Interval.in_5_minute)
-            print("Sending Email 5")
-            Email_sender(Output, 5)
-        if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.now().time().minute in [0,15,30,45]:
-            Output = FEMUR(Interval.in_15_minute)
-            print("Sending Email 15")
-            Email_sender(Output, 15)
-        if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.now().time().minute in [0,30]:
-            Output = FEMUR(Interval.in_30_minute)
-            print("Sending Email 30")
-            Email_sender(Output, 30)
-        else:
-            time.sleep(60)
-        time.sleep(60)
+        while datetime.datetime.now().time().hour in range(3,13):
+            sleep_time = Sleeper()
+            time.sleep(sleep_time)
+            Output_five = FEMUR(Interval.in_5_minute)
+            Email_sender(Output_five, 5)
+            if datetime.datetime.now().time().minute in [0,15,30,45]:
+                Output_fifteen = FEMUR(Interval.in_15_minute)
+                Email_sender(Output_fifteen, 15)
+            if datetime.datetime.now().time().minute in [0,30]:
+                Output_thirty = FEMUR(Interval.in_30_minute)
+                Email_sender(Output_fifteen, 30)
+            else:
+                continue
     time.sleep(60)
