@@ -190,14 +190,13 @@ def Email_sender(df, timeframe):
 def Sleeper():
     t = datetime.datetime.now().time().minute
     s = datetime.datetime.now().time().second
-    if t != 0:
-        upper_five_min = math.ceil(t / 5) * 5
-        diff = upper_five_min - t
-        if diff == 0:
-            diff = 5
-        else:
-            pass
-        sleep_time_sec = ((diff - 1) * 60) + (60 - s)
+    upper_five_min = math.ceil(t / 5) * 5
+    diff = upper_five_min - t
+    if diff == 0:
+        diff = 5
+    else:
+        pass
+    sleep_time_sec = ((diff - 1) * 60) + (60 - s)
     return sleep_time_sec
 
 
