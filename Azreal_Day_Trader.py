@@ -213,23 +213,23 @@ while True:
             st.write("5 min check {}".format(datetime.datetime.now()))
             try:
                 Output_five = FEMUR(Interval.in_5_minute)
+                Email_sender(Output_five, 5)
             except:
                 st.write("Error in 5 min FEMUR")
-            Email_sender(Output_five, 5)
             if datetime.datetime.now().time().minute in [0,15,30,45]:
                 st.write("15 min check {}".format(datetime.datetime.now()))
                 try:
                     Output_fifteen = FEMUR(Interval.in_15_minute)
+                    Email_sender(Output_fifteen, 15)
                 except:
                     st.write("Error in 15 min FEMUR")
-                Email_sender(Output_fifteen, 15)
             if datetime.datetime.now().time().minute in [0,30]:
                 st.write("30 min check {}".format(datetime.datetime.now()))
                 try:
                     Output_thirty = FEMUR(Interval.in_30_minute)
+                    Email_sender(Output_fifteen, 30)
                 except:
                     st.write("Error in 30 min FEMUR")
-                Email_sender(Output_fifteen, 30)
             else:
                 continue
     time.sleep(60)
