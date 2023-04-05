@@ -19,21 +19,15 @@ import time
 
 def FEMUR(time_interval):
     Forex_Pairs_List = ["EURUSD","USDJPY","GBPUSD","AUDUSD","USDCHF","NZDUSD","USDCAD","EURJPY","EURGBP","EURCHF","NZDJPY","NZDCAD"]
-
     Final_df = pd.DataFrame()
-
     username = 'Azreal1'
     password = st.secrets["tv_password"]
-
     tv = TvDatafeed(username, password)
-
     for Currency_Pair in Forex_Pairs_List:
         Symbol_String = Currency_Pair
-        Currency_Pair = tv.get_hist(symbol = 'FX:{}'.format(Currency_Pair), exchange = 'FXCM',
-                                    interval = time_interval, n_bars = 100)
+        Currency_Pair = tv.get_hist(symbol = 'FX:{}'.format(Currency_Pair), exchange = 'FXCM', interval = time_interval, n_bars = 100)
         #Stochastic
-        Stoch = round(ta.stoch(high = Currency_Pair["high"], low = Currency_Pair["low"], 
-                               close = Currency_Pair["close"], window = 14, smooth_window = 3),2)
+        Stoch = round(ta.stoch(high = Currency_Pair["high"], low = Currency_Pair["low"], close = Currency_Pair["close"], window = 14, smooth_window = 3),2)
         Currency_Pair["Stochastic %K"] = Stoch["STOCHk_14_3_3"]
         Currency_Pair["Stochastic %D"] = Stoch["STOCHd_14_3_3"]
         #Heiken Ashi
@@ -192,16 +186,21 @@ def Email_sender(df, timeframe):
 st.title("Notification Engine")
 
 while True:
+    print("Loop Entered")
     while datetime.datetime.today().weekday() in range(0,5):
         if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.now().time().minute in [0,5,10,15,20,25,30,35,40,45,50,55]:
             Output = FEMUR(Interval.in_5_minute)
+            print("Sending Email 5")
             Email_sender(Output, 5)
         if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.now().time().minute in [0,15,30,45]:
             Output = FEMUR(Interval.in_15_minute)
+            print("Sending Email 15")
             Email_sender(Output, 15)
         if datetime.datetime.now().time().hour in range(3,13) and datetime.datetime.now().time().minute in [0,30]:
             Output = FEMUR(Interval.in_30_minute)
+            print("Sending Email 30")
             Email_sender(Output, 30)
         else:
-            time.sleep(1)
+            time.sleep(60)
+        time.sleep(60)
     time.sleep(60)
