@@ -41,8 +41,7 @@ def FEMUR(time_interval):
             Rounding = 3
         else:
             Rounding = 5
-        Heiken_Ashi = round(ta.ha(Currency_Pair["open"], high = Currency_Pair["high"], 
-                                  low = Currency_Pair["low"], close = Currency_Pair["close"]),Rounding)
+        Heiken_Ashi = round(ta.ha(Currency_Pair["open"], high = Currency_Pair["high"], low = Currency_Pair["low"], close = Currency_Pair["close"]), Rounding)
         Currency_Pair["Heiken Ashi Open"] = Heiken_Ashi["HA_open"]
         Currency_Pair["Heiken Ashi High"] = Heiken_Ashi["HA_high"]
         Currency_Pair["Heiken Ashi Low"] = Heiken_Ashi["HA_low"]
