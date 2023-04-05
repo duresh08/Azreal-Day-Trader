@@ -182,9 +182,11 @@ def Email_sender(df, timeframe):
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login('dhruv.suresh2@gmail.com', password_mail)
+        st.write("Sending mail at time {} for timeframe {}".format(datetime.datetime.now(), timeframe))
         server.sendmail(msg['From'], 'f20180884g@alumni.bits-pilani.ac.in' , msg.as_string())
         server.close()
     else:
+        st.write("No mail to send at time {} for timeframe {}".format(datetime.datetime.now(), timeframe))
         pass
 
 def Sleeper():
@@ -206,14 +208,27 @@ while True:
     while datetime.datetime.today().weekday() in range(0,5):
         while datetime.datetime.now().time().hour in range(3,13):
             sleep_time = Sleeper()
+            st.write("Sleep for {} seconds".format(sleep_time))
             time.sleep(sleep_time)
-            Output_five = FEMUR(Interval.in_5_minute)
+            st.write("5 min check {}".format(datetime.datetime.now()))
+            try:
+                Output_five = FEMUR(Interval.in_5_minute)
+            except:
+                st.write("Error in 5 min FEMUR")
             Email_sender(Output_five, 5)
             if datetime.datetime.now().time().minute in [0,15,30,45]:
-                Output_fifteen = FEMUR(Interval.in_15_minute)
+                st.write("15 min check {}".format(datetime.datetime.now()))
+                try:
+                    Output_fifteen = FEMUR(Interval.in_15_minute)
+                except:
+                    st.write("Error in 15 min FEMUR")
                 Email_sender(Output_fifteen, 15)
             if datetime.datetime.now().time().minute in [0,30]:
-                Output_thirty = FEMUR(Interval.in_30_minute)
+                st.write("30 min check {}".format(datetime.datetime.now()))
+                try:
+                    Output_thirty = FEMUR(Interval.in_30_minute)
+                except:
+                    st.write("Error in 30 min FEMUR")
                 Email_sender(Output_fifteen, 30)
             else:
                 continue
