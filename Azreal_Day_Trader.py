@@ -232,4 +232,5 @@ while True:
                     st.write("Error in 30 min FEMUR")
             else:
                 continue
+    st.write("Weeknd is here")
     time.sleep(60)
