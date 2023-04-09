@@ -206,7 +206,7 @@ st.title("Notification Engine")
 
 while True:
     while datetime.datetime.today().weekday() in range(0,5):
-        while datetime.datetime.now().time().hour in range(3,13):
+        while datetime.datetime.now().time().hour in range(3,16):
             sleep_time = Sleeper()
             st.write("Sleep for {} seconds".format(sleep_time))
             time.sleep(sleep_time)
