@@ -20,7 +20,7 @@ import math
 import time
 
 def FEMUR(time_interval):
-    Forex_Pairs_List = ["EURUSD","USDJPY","GBPUSD","AUDUSD","USDCHF","NZDUSD","USDCAD","EURJPY","EURGBP","EURCHF","NZDJPY","NZDCAD"]
+    Forex_Pairs_List = ["EURUSD","USDJPY","GBPUSD","AUDUSD","USDCHF","NZDUSD","USDCAD","EURJPY","EURGBP","EURCHF","NZDJPY","NZDCHF","EURAUD","EURCAD","CADJPY","CADCHF","AUDCAD","AUDJPY","GBPJPY"]
     Final_df = pd.DataFrame()
     username = 'Azreal1'
     password = st.secrets["tv_password"]
