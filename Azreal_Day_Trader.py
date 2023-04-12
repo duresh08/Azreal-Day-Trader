@@ -28,7 +28,7 @@ def FEMUR(time_interval):
     tv = TvDatafeed(username, password)
     for Currency_Pair in Forex_Pairs_List:
         Symbol_String = Currency_Pair
-        Currency_Pair = tv.get_hist(symbol = 'FX:{}'.format(Currency_Pair), exchange = 'FXCM', interval = time_interval, n_bars = 100)
+        Currency_Pair = tv.get_hist(symbol = 'FX:{}'.format(Currency_Pair), exchange = 'FXCM', interval = time_interval, n_bars = 400)
         #Stochastic
         Stoch = round(ta.stoch(high = Currency_Pair["high"], low = Currency_Pair["low"], close = Currency_Pair["close"], window = 14, smooth_window = 3),2)
         Currency_Pair["Stochastic %K"] = Stoch["STOCHk_14_3_3"]
