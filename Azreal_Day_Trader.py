@@ -152,8 +152,8 @@ def FEMUR(time_interval):
             i+=1
 
         Currency_Pair["Divergence"] = Divergence_List
-
         Final_df = pd.concat([Final_df , Currency_Pair.iloc[[-2]]])
+        
     Final_df = Final_df.drop(["open","high","low","volume","Heiken Ashi Open","Heiken Ashi High","Heiken Ashi Low","Heiken Ashi Close"
     ,"Heiken Ashi Boolean","Stochastic %K","Stochastic %D","Peak Value","Stochastic Peak Value"], axis = 1)
     Final_df = Final_df[pd.isna(Final_df['Divergence']) == False]
