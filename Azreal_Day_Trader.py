@@ -20,7 +20,8 @@ import math
 import time
 
 def FEMUR(time_interval):
-    Forex_Pairs_List = ["EURUSD","USDJPY","GBPUSD","AUDUSD","USDCHF","NZDUSD","USDCAD","EURJPY","EURGBP","EURCHF","NZDJPY","NZDCHF","EURAUD","EURCAD","CADJPY","CADCHF","AUDCAD","AUDJPY","GBPJPY"]
+    Forex_Pairs_List = ["EURUSD","USDJPY","GBPUSD","AUDUSD","USDCHF","NZDUSD","USDCAD","EURJPY","EURGBP","EURCHF","NZDJPY","NZDCHF","EURAUD","EURCAD",
+                        "CADJPY","CADCHF","AUDCAD","AUDJPY","GBPJPY","GBPAUD","GBPNZD","EURNZD","GBPCHF","AUDNZD"]
     Final_df = pd.DataFrame()
     username = 'Azreal1'
     password = st.secrets["tv_password"]
@@ -42,7 +43,10 @@ def FEMUR(time_interval):
         Currency_Pair["Heiken Ashi High"] = Heiken_Ashi["HA_high"]
         Currency_Pair["Heiken Ashi Low"] = Heiken_Ashi["HA_low"]
         Currency_Pair["Heiken Ashi Close"] = Heiken_Ashi["HA_close"]
-
+        
+        EMA_200 = round(ta.ema(Currency_Pair["close"], 200), Rounding)
+        Currency_Pair["200 EMA"] = EMA_200
+        
         #Heiken Ashi Bool
         Heiken_Ashi_Boolean = []
 
@@ -150,21 +154,29 @@ def FEMUR(time_interval):
         Currency_Pair["Divergence"] = Divergence_List
 
         Final_df = pd.concat([Final_df , Currency_Pair.iloc[[-2]]])
-    Final_df = Final_df.drop(["open","high","low","close","volume","Heiken Ashi Open","Heiken Ashi High","Heiken Ashi Low","Heiken Ashi Close"
+    Final_df = Final_df.drop(["open","high","low","volume","Heiken Ashi Open","Heiken Ashi High","Heiken Ashi Low","Heiken Ashi Close"
     ,"Heiken Ashi Boolean","Stochastic %K","Stochastic %D","Peak Value","Stochastic Peak Value"], axis = 1)
+    Final_df = Final_df[pd.isna(Final_df['Divergence']) == False]
+    long_df = pd.DataFrame()
+    short_df = pd.DataFrame()
+    try:
+        long_df = Final_df[Final_df['Divergence'] == 'Regular Divergence Long'].loc[Final_df['close'] > Final_df['200 EMA']]
+    except:
+        st.write("No long trades at this time")
+    try:
+        short_df = Final_df[Final_df['Divergence'] == 'Regular Divergence Short'].loc[Final_df['close'] < Final_df['200 EMA']]
+    except:
+        st.write("No short trades at this time")
+    Final_df = pd.concat([long_df, short_df])
     return Final_df
 
-def Email_sender(df, timeframe):
+def Email_sender(Output_msg, timeframe):
     password_mail = st.secrets["password"]
-    Output = df
     if timeframe == 5:
         symbols = ['FX:EURUSD','FX:AUDUSD','FX:USDCHF','FX:NZDUSD','FX:USDJPY']
+        Output_msg = Output_msg[Output_msg['symbol'].isin(symbols)]
     else:
-        symbols = ['FX:EURUSD','FX:AUDUSD','FX:USDCHF','FX:NZDUSD','FX:USDJPY',
-                  'FX:USDCAD','FX:NZDJPY','FX:NZDCAD','FX:GBPUSD','FX:EURJPY',
-                  'FX:EURGBP','FX:EURCHF']
-    Output = Output[Output['symbol'].isin(symbols)]
-    Output_msg = Output[pd.isna(Output['Divergence']) == False]
+        pass
     if Output_msg.empty == False:
         msg = MIMEMultipart()
         msg['Subject'] = "Azreal {} Minutes".format(timeframe)
