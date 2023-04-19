@@ -174,7 +174,10 @@ def Email_sender(Output_msg, timeframe):
     password_mail = st.secrets["password"]
     if timeframe == 5:
         symbols = ['FX:EURUSD','FX:AUDUSD','FX:USDCHF','FX:NZDUSD','FX:USDJPY']
-        Output_msg = Output_msg[Output_msg['symbol'].isin(symbols)]
+        try:
+            Output_msg = Output_msg[Output_msg['symbol'].isin(symbols)]
+        except:
+            st.write("No mail to send at time {} for timeframe {}".format(datetime.datetime.now(), timeframe))
     else:
         pass
     if Output_msg.empty == False:
