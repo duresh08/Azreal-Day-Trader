@@ -51,6 +51,9 @@ def FEMUR(time_interval):
         EMA_200 = round(ta.ema(Currency_Pair["close"], 200), Rounding)
         Currency_Pair["200 EMA"] = EMA_200
         
+        ATR = ta.atr(Currency_Pair['high'], Currency_Pair['low'], Currency_Pair['close'], 14) * 2
+        Currency_Pair["ATR"] = ATR
+        
         #Heiken Ashi Bool
         Heiken_Ashi_Boolean = []
 
@@ -161,17 +164,17 @@ def FEMUR(time_interval):
     Final_df = Final_df.drop(["open","high","low","volume","Heiken Ashi Open","Heiken Ashi High","Heiken Ashi Low","Heiken Ashi Close"
     ,"Heiken Ashi Boolean","Stochastic %K","Stochastic %D","Peak Value","Stochastic Peak Value"], axis = 1)
     Final_df = Final_df[pd.isna(Final_df['Divergence']) == False]
-#     long_df = pd.DataFrame()
-#     short_df = pd.DataFrame()
-#     try:
-#         long_df = Final_df[Final_df['Divergence'] == 'Regular Divergence Long'].loc[Final_df['close'] > Final_df['200 EMA']]
-#     except:
-#         st.write("No long trades at this time")
-#     try:
-#         short_df = Final_df[Final_df['Divergence'] == 'Regular Divergence Short'].loc[Final_df['close'] < Final_df['200 EMA']]
-#     except:
-#         st.write("No short trades at this time")
-#     Final_df = pd.concat([long_df, short_df])
+    long_df = pd.DataFrame()
+    short_df = pd.DataFrame()
+    try:
+        long_df = Final_df[Final_df['Divergence'] == 'Regular Divergence Long'].loc[Final_df['close'] > (Final_df['200 EMA'] - df['ATR'])]
+    except:
+        st.write("No long trades at this time")
+    try:
+        short_df = Final_df[Final_df['Divergence'] == 'Regular Divergence Short'].loc[Final_df['close'] < (Final_df['200 EMA'] + df['ATR'])]
+    except:
+        st.write("No short trades at this time")
+    Final_df = pd.concat([long_df, short_df])
     return Final_df
 
 def Email_sender(Output_msg, timeframe):
