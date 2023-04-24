@@ -249,7 +249,7 @@ while True:
                 st.write("30 min check {}".format(datetime.datetime.now()))
                 try:
                     Output_thirty = FEMUR(Interval.in_30_minute)
-                    Email_sender(Output_fifteen, 30)
+                    Email_sender(Output_thirty, 30)
                 except:
                     st.write("Error in 30 min FEMUR")
             else:
