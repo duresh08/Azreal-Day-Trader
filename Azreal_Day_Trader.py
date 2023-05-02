@@ -164,29 +164,29 @@ def FEMUR(time_interval):
     Final_df = Final_df.drop(["open","high","low","volume","ATR","Heiken Ashi Open","Heiken Ashi High","Heiken Ashi Low","Heiken Ashi Close"
     ,"Heiken Ashi Boolean","Stochastic %K","Stochastic %D","Peak Value","Stochastic Peak Value"], axis = 1)
     Final_df = Final_df[pd.isna(Final_df['Divergence']) == False]
-#     long_df = pd.DataFrame()
-#     short_df = pd.DataFrame()
-#     try:
-#         long_df = Final_df[Final_df['Divergence'] == 'Regular Divergence Long'].loc[Final_df['close'] > (Final_df['200 EMA'] - df['ATR'])]
-#     except:
-#         st.write("No long trades at this time")
-#     try:
-#         short_df = Final_df[Final_df['Divergence'] == 'Regular Divergence Short'].loc[Final_df['close'] < (Final_df['200 EMA'] + df['ATR'])]
-#     except:
-#         st.write("No short trades at this time")
-#     Final_df = pd.concat([long_df, short_df])
+    long_df = pd.DataFrame()
+    short_df = pd.DataFrame()
+    try:
+        long_df = Final_df[(Final_df['Divergence'] == "Regular Divergence Long") & (Final_df['close'] >= (Final_df['200 EMA'] - Final_df['ATR']))].reset_index(drop = True)
+    except:
+        st.write("No long trades at this time")
+    try:
+        short_df = Final_df[(Final_df['Divergence'] == "Regular Divergence Short") & (Final_df['close'] <= (Final_df['200 EMA'] + Final_df['ATR']))].reset_index(drop = True)
+    except:
+        st.write("No short trades at this time")
+    Final_df = pd.concat([long_df, short_df]).reset_index(drop = True)
     return Final_df
 
 def Email_sender(Output_msg, timeframe):
     password_mail = st.secrets["password"]
-    if timeframe == 5:
-        symbols = ['FX:EURUSD','FX:AUDUSD','FX:USDCHF','FX:NZDUSD','FX:USDJPY']
-        try:
-            Output_msg = Output_msg[Output_msg['symbol'].isin(symbols)]
-        except:
-            st.write("No mail to send at time {} for timeframe {}".format(datetime.datetime.now(), timeframe))
-    else:
-        pass
+#     if timeframe == 5:
+#         symbols = ['FX:EURUSD','FX:AUDUSD','FX:USDCHF','FX:NZDUSD','FX:USDJPY']
+#         try:
+#             Output_msg = Output_msg[Output_msg['symbol'].isin(symbols)]
+#         except:
+#             st.write("No mail to send at time {} for timeframe {}".format(datetime.datetime.now(), timeframe))
+#     else:
+#         pass
     if Output_msg.empty == False:
         msg = MIMEMultipart()
         msg['Subject'] = "Azreal {} Minutes".format(timeframe)
